@@ -1,13 +1,12 @@
-import 'dart:async';
-
-import 'package:filevault/database/database_instance.dart';
+import 'package:filevault/widgets/register_form.dart';
 import 'package:flutter/material.dart';
 
+import '../database/database_instance.dart';
 import '../utils/hex_color.dart';
-import '../widgets/login_form.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +34,9 @@ class LoginPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     print("koneksi snapshot sukses");
-                    return LoginFormWidget();
+                    return RegisterFormWidget();
                   } else {
-                    print("Menunggu");
+                    print("menunggu");
                     return Text("Menghubungkan Database");
                   }
                 },

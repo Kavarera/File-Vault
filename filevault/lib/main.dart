@@ -1,3 +1,4 @@
+import 'package:filevault/controllers/login_controller.dart';
 import 'package:filevault/page/login.dart';
 import 'package:filevault/routes/page_route.dart';
 import 'package:filevault/utils/hex_color.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
           fontFamily: GoogleFonts.poppins().fontFamily),
       home: const LoginPage(),
       getPages: ListPageRoute.pages,
+      initialBinding: BindingsBuilder(() {
+        Get.put(LoginController());
+      }),
     );
   }
 }
