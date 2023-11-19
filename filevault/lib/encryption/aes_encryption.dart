@@ -12,6 +12,7 @@ void encryptFiles(List<XFile> files, String key, String pathOutput) {
   final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
   final iv = encrypt.IV.fromLength(16);
   int a = 0;
+  filesInBytes.add(iv.bytes);
   files.forEach((element) {
     try {
       final contents = File(element.path).readAsBytesSync();
@@ -37,39 +38,34 @@ void encryptFiles(List<XFile> files, String key, String pathOutput) {
     String jsonData = json.encode(filesInBytes);
     File(pathOutput + '\\' + 'Encrypted Vault.kvault')
         .writeAsStringSync(jsonData);
-
-    //TESTING BACA FILE FORMATED JSON
-    String contentVault =
-        File(pathOutput + '\\' + 'Encrypted Vault.kvault').readAsStringSync();
-    List<List<int>> data = (json.decode(contentVault) as List)
-        .map((list) => List<int>.from(list))
-        .toList();
-
-    //COBA DECRYPT
-    //coba save file as bytes dari gpt
-    File(pathOutput + '\\' + 'Encrypted Vault.kvault2').writeAsBytesSync(
-        Uint8List.fromList(filesInBytes.expand((x) => x).toList()));
-
-    //Baca file as bytes
-    final encryptedContent =
-        File(pathOutput + '\\' + 'Encrypted Vault.kvault2').readAsBytesSync();
-    final encryptedFiles = [encryptedContent];
-    print(encryptedFiles.length);
-    encryptedFiles.forEach((element) {
-      try {
-        final encrypter = encrypt.Encrypter(encrypt.AES(keyFrom));
-        final decryptedContents =
-            encrypter.decryptBytes(encrypt.Encrypted(element), iv: iv);
-        final decryptedPath = pathOutput +
-            '\\' +
-            'decrypted_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        File(decryptedPath).writeAsBytesSync(decryptedContents);
-        print("decrypt selesai $decryptedPath");
-      } catch (e) {
-        print("error while decrypting = $e");
-      }
-    });
   }
 }
 
-void decryptFile() {}
+void decryptFile(String pathOutput, String key) {
+  final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
+  //TESTING BACA FILE FORMATED JSON
+  String contentVault = File(pathOutput).readAsStringSync();
+  List<List<int>> data = (json.decode(contentVault) as List)
+      .map((list) => List<int>.from(list))
+      .toList();
+  //decrypt sendiri
+  encrypt.IV currentIV = encrypt.IV(Uint8List.fromList(data[0]));
+  data.forEach(
+    (element) {
+      if (element.length == 16) {
+        return;
+      } else {
+        final currentEncryptedFiles = Uint8List.fromList(element);
+        final encrypter = encrypt.Encrypter(encrypt.AES(keyFrom));
+        final decryptedContents = encrypter.decryptBytes(
+            encrypt.Encrypted(currentEncryptedFiles),
+            iv: currentIV);
+        final decryptedPath = pathOutput +
+            '\\' +
+            'decrypted2_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        File(decryptedPath).writeAsBytesSync(decryptedContents);
+      }
+    },
+  );
+  print("testing banyak file berhasil");
+}
