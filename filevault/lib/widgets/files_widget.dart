@@ -11,7 +11,7 @@ class FileContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 1, vertical: 1),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.file_present_rounded,
             size: 100,
           ),
