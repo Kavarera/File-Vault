@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:filevault/encryption/aes_encryption.dart';
 import 'package:filevault/widgets/files_widget.dart';
@@ -45,5 +49,29 @@ class FileEncryptController extends GetxController {
 
   void startEncrypt(String key) {
     encryptFiles(files, key, lokasi.value);
+  }
+
+  Future<void> readFileVault(String vaultPath) async {
+    try {
+      final vaultFile = await FilePicker.platform.pickFiles(withData: true);
+      if (vaultFile == null) {
+        return;
+      }
+
+      print("vaultFile name = ${vaultFile.files.single.name}");
+      print("vaultFile path = ${vaultFile.files.single.path}");
+      print("vaultFile read = ");
+      Uint8List? fileBytes = vaultFile.files.first.bytes;
+      if (fileBytes == null) {
+        print("fileBytes is null, why??");
+        return;
+      }
+      print(fileBytes);
+      File(vaultFile.files.first.path.toString() + "_hasil.jpeg")
+          .writeAsBytesSync(fileBytes);
+      //coba write gambar lagi
+    } catch (e) {
+      print("Error while read vault = $e ");
+    }
   }
 }

@@ -85,6 +85,8 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
                       if (fileEncryptController.widgetListFile.length > 0) {
                         fileEncryptController
                             .startEncrypt(keyController.text.toString());
+                        // fileEncryptController
+                        //     .readFileVault(fileEncryptController.lokasi.value);
                       }
                     },
                     child: Text("Encrypt"),
