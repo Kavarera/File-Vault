@@ -85,6 +85,8 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
                       if (fileEncryptController.widgetListFile.length > 0) {
                         fileEncryptController
                             .startEncrypt(keyController.text.toString());
+                        fileEncryptController
+                            .readFileVault(fileEncryptController.lokasi.value);
                       }
                     },
                     child: Text("Encrypt"),
@@ -121,9 +123,9 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
                         child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 10,
-                            crossAxisSpacing: 5.0,
-                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 2,
+                            crossAxisCount: 8,
+                            mainAxisSpacing: 5,
                           ),
                           itemBuilder: (BuildContext context, int index) {
                             return Column(

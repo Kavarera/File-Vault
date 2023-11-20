@@ -19,7 +19,6 @@ class FileContainer extends StatelessWidget {
             filename ?? "Unknown File",
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            maxLines: 1,
           ),
         ],
       ),
