@@ -8,10 +8,9 @@ import 'package:file_selector/file_selector.dart';
 void encryptFiles(List<XFile> files, String key, String pathOutput) {
   print("start encrypt");
   var filesInBytes = List<List<int>>.empty(growable: true);
-  var filesInBytesRepresentString = List<String>.empty(growable: true);
   final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
   final iv = encrypt.IV.fromLength(16);
-  int a = 0;
+
   filesInBytes.add(iv.bytes);
   files.forEach((element) {
     try {
@@ -20,12 +19,12 @@ void encryptFiles(List<XFile> files, String key, String pathOutput) {
       // final encryptedContents = encrypter.encryptBytes(contents, iv: iv);
       // print("contents = ${contents.toString()}");
       final encryptedContents = encrypter.encryptBytes(contents, iv: iv);
-
       final encryptedPath = pathOutput +
           '\\' +
           element.name.replaceAll('.', '_encryptedByKavarera.');
       // File(encryptedPath).writeAsBytesSync(encryptedContents.bytes);
       filesInBytes.add(encryptedContents.bytes);
+
       // print(filesInBytes[a]);
       print("encrypt selesai $encryptedPath");
     } catch (e) {
@@ -41,7 +40,7 @@ void encryptFiles(List<XFile> files, String key, String pathOutput) {
   }
 }
 
-void decryptFile(String pathOutput, String key) {
+List<List<int>> decryptFile(String pathOutput, String key) {
   final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
   //TESTING BACA FILE FORMATED JSON
   String contentVault = File(pathOutput).readAsStringSync();
@@ -50,6 +49,7 @@ void decryptFile(String pathOutput, String key) {
       .toList();
   //decrypt sendiri
   encrypt.IV currentIV = encrypt.IV(Uint8List.fromList(data[0]));
+  List<List<int>> decryptedFiles = List.empty(growable: true);
   data.forEach(
     (element) {
       if (element.length == 16) {
@@ -63,9 +63,11 @@ void decryptFile(String pathOutput, String key) {
         final decryptedPath = pathOutput +
             '\\' +
             'decrypted2_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        File(decryptedPath).writeAsBytesSync(decryptedContents);
+        decryptedFiles.add(decryptedContents);
+        // File(decryptedPath).writeAsBytesSync(decryptedContents);
       }
     },
   );
-  print("testing banyak file berhasil");
+  print("testing banyak file berhasil, total file = ${decryptedFiles.length}");
+  return decryptedFiles;
 }

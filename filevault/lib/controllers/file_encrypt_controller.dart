@@ -51,27 +51,27 @@ class FileEncryptController extends GetxController {
     encryptFiles(files, key, lokasi.value);
   }
 
-  Future<void> readFileVault(String vaultPath) async {
-    try {
-      final vaultFile = await FilePicker.platform.pickFiles(withData: true);
-      if (vaultFile == null) {
-        return;
-      }
+  // Future<void> readFileVault(String vaultPath) async {
+  //   try {
+  //     final vaultFile = await FilePicker.platform.pickFiles(withData: true);
+  //     if (vaultFile == null) {
+  //       return;
+  //     }
 
-      print("vaultFile name = ${vaultFile.files.single.name}");
-      print("vaultFile path = ${vaultFile.files.single.path}");
-      print("vaultFile read = ");
-      Uint8List? fileBytes = vaultFile.files.first.bytes;
-      if (fileBytes == null) {
-        print("fileBytes is null, why??");
-        return;
-      }
-      print(fileBytes);
-      File(vaultFile.files.first.path.toString() + "_hasil.jpeg")
-          .writeAsBytesSync(fileBytes);
-      //coba write gambar lagi
-    } catch (e) {
-      print("Error while read vault = $e ");
-    }
-  }
+  //     print("vaultFile name = ${vaultFile.files.single.name}");
+  //     print("vaultFile path = ${vaultFile.files.single.path}");
+  //     print("vaultFile read = ");
+  //     Uint8List? fileBytes = vaultFile.files.first.bytes;
+  //     if (fileBytes == null) {
+  //       print("fileBytes is null, why??");
+  //       return;
+  //     }
+  //     print(fileBytes);
+  //     File(vaultFile.files.first.path.toString() + "_hasil.jpeg")
+  //         .writeAsBytesSync(fileBytes);
+  //     //coba write gambar lagi
+  //   } catch (e) {
+  //     print("Error while read vault = $e ");
+  //   }
+  // }
 }

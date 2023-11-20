@@ -13,8 +13,8 @@ class FileEncryptPage extends StatefulWidget {
 
 class _FileEncryptPageState extends State<FileEncryptPage> {
   var fileEncryptController = Get.put(FileEncryptController());
-
   var keyController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,8 +85,6 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
                       if (fileEncryptController.widgetListFile.length > 0) {
                         fileEncryptController
                             .startEncrypt(keyController.text.toString());
-                        fileEncryptController
-                            .readFileVault(fileEncryptController.lokasi.value);
                       }
                     },
                     child: Text("Encrypt"),

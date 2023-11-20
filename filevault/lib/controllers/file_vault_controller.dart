@@ -1,3 +1,4 @@
+import 'package:filevault/page/file_decrypt_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -13,5 +14,5 @@ class FileVaultController extends GetxController {
   }
 
   Widget getCurrentPage() =>
-      _isVaultOpen.value ? const Text("false") : FileEncryptPage();
+      _isVaultOpen.value ? FileDecryptPage() : FileEncryptPage();
 }
