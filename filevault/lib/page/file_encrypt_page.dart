@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:filevault/controllers/file_encrypt_controller.dart';
 import 'package:filevault/utils/hex_color.dart';
+import 'package:filevault/utils/random_facts.dart';
+import 'package:filevault/utils/random_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FileEncryptPage extends StatefulWidget {
   const FileEncryptPage({super.key});
@@ -11,9 +16,11 @@ class FileEncryptPage extends StatefulWidget {
   State<FileEncryptPage> createState() => _FileEncryptPageState();
 }
 
-class _FileEncryptPageState extends State<FileEncryptPage> {
+class _FileEncryptPageState extends State<FileEncryptPage>
+    with SingleTickerProviderStateMixin {
   var fileEncryptController = Get.put(FileEncryptController());
   var keyController = TextEditingController();
+  var _currentImage = Random().nextInt(getTotalRandomPic());
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +87,78 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 5),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       print(fileEncryptController.widgetListFile.length);
                       if (fileEncryptController.widgetListFile.length > 0) {
-                        fileEncryptController
+                        Get.defaultDialog(
+                            barrierDismissible: false,
+                            contentPadding: const EdgeInsets.all(0),
+                            title:
+                                "Sedang Membuat Vault", // Tidak dapat menutup dialog dengan mengklik di luar dialog
+                            content: Container(
+                              width: 800,
+                              height: 400,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  LinearProgressIndicator(
+                                    color: Colors.blue,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 300,
+                                    child: FadeTransition(
+                                      opacity:
+                                          Tween<double>(begin: 0.0, end: 1.0)
+                                              .animate(
+                                        CurvedAnimation(
+                                          parent:
+                                              AlwaysStoppedAnimation<double>(
+                                                  1.0),
+                                          curve: Interval(0.5, 1.0,
+                                              curve: Curves.easeInOut),
+                                        ),
+                                      ),
+                                      child: Image(
+                                        image: AssetImage(
+                                          getRandomPic(Random()
+                                              .nextInt(getTotalRandomPic())),
+                                        ),
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                  LinearProgressIndicator(
+                                    color: Colors.blue,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      "Tahukah kamu?",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(getFakta(
+                                        Random().nextInt(getTotalFakta()))),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            titleStyle: GoogleFonts.poppins(
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                            ));
+                        await Future.delayed(Duration(seconds: 10));
+                        await fileEncryptController
                             .startEncrypt(keyController.text.toString());
+                        print("dialog tertutup");
+                        Get.back();
                       }
                     },
                     child: Text("Encrypt"),
@@ -158,5 +232,60 @@ class _FileEncryptPageState extends State<FileEncryptPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _showEncryptingDialog() async {
+    print("dialog terbka");
+    Get.defaultDialog(
+        barrierDismissible: true,
+        contentPadding: const EdgeInsets.all(0),
+        title:
+            "Sedang Membuat Vault", // Tidak dapat menutup dialog dengan mengklik di luar dialog
+        content: Container(
+          width: 800,
+          height: 400,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                height: 300,
+                child: FadeTransition(
+                  opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: AlwaysStoppedAnimation<double>(1.0),
+                      curve: Interval(0.5, 1.0, curve: Curves.easeInOut),
+                    ),
+                  ),
+                  child: Image(
+                    image: AssetImage(
+                      getRandomPic(Random().nextInt(getTotalRandomPic())),
+                    ),
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 5),
+                child: Text(
+                  "Tahukah kamu?",
+                  style: GoogleFonts.poppins(
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(getFakta(Random().nextInt(getTotalFakta()))),
+              )
+            ],
+          ),
+        ),
+        titleStyle: GoogleFonts.poppins(
+          fontSize: 35,
+          fontWeight: FontWeight.bold,
+        ));
   }
 }

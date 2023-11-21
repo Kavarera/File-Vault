@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -7,6 +8,10 @@ import 'package:filevault/encryption/aes_encryption.dart';
 import 'package:filevault/widgets/files_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../utils/random_facts.dart';
+import '../utils/random_images.dart';
 
 class FileEncryptController extends GetxController {
   XTypeGroup jpgsTypeGroup = const XTypeGroup(
@@ -17,6 +22,8 @@ class FileEncryptController extends GetxController {
     label: 'any',
     extensions: <String>['*'],
   );
+
+  var onEncrypt = false.obs;
 
   var widgetListFile = List<Widget>.empty(growable: true).obs;
   var lokasi = "".obs;
@@ -47,8 +54,14 @@ class FileEncryptController extends GetxController {
     lokasi.value = tempPath;
   }
 
-  void startEncrypt(String key) {
-    encryptFiles(files, key, lokasi.value);
+  Future<void> startEncrypt(String key) async {
+    await encryptFiles(files, key, lokasi.value);
+    await Future.delayed(
+      Duration(seconds: 10),
+      () {
+        print("startEncrypt selesai");
+      },
+    );
   }
 
   // Future<void> readFileVault(String vaultPath) async {

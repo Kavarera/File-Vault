@@ -7,7 +7,8 @@ import 'package:file_selector/file_selector.dart';
 
 import '../models/file.dart';
 
-void encryptFiles(List<XFile> files, String key, String pathOutput) {
+Future<void> encryptFiles(
+    List<XFile> files, String key, String pathOutput) async {
   print("start encrypt");
   var filesInBytes = List<List<int>>.empty(growable: true);
   final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
