@@ -12,6 +12,7 @@ class FileDecryptPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fileDecryptController = Get.put(FileDecryptController());
+    var keyDecryptController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
@@ -57,6 +58,7 @@ class FileDecryptPage extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   return TextField(
+                    controller: keyDecryptController,
                     decoration: InputDecoration(
                       enabled: fileDecryptController.isLokasiSetup.value,
                       filled: true,
@@ -77,7 +79,8 @@ class FileDecryptPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10),
                 child: ElevatedButton(
                   onPressed: () {
-                    fileDecryptController.startDecrypt("test");
+                    fileDecryptController.testDecryptFileData(
+                        keyDecryptController.text.toString());
                     print(fileDecryptController.isDecrypted.value);
                   },
                   child: Text("Decrypt"),

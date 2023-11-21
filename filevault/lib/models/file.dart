@@ -5,7 +5,7 @@ class FileData {
 
   factory FileData.fromJson(Map<String, dynamic> json) {
     return FileData(
-      json['fileName'] as String,
+      json['format'] as String,
       (json['content'] as List).cast<int>(),
     );
   }

@@ -6,6 +6,8 @@ import 'package:filevault/widgets/files_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../models/file.dart';
+
 class FileDecryptController extends GetxController {
   XTypeGroup vaultFileFormat = const XTypeGroup(
     label: 'Kavarera Vault',
@@ -17,6 +19,7 @@ class FileDecryptController extends GetxController {
 
   var isDecrypted = false.obs;
   List<List<int>>? listDecryptedFile;
+  List<FileData>? testListFileData;
 
   var widgetListDecryptedFile = List<Widget>.empty(growable: true).obs;
 
@@ -38,14 +41,29 @@ class FileDecryptController extends GetxController {
     isLokasiSetup.value = false;
   }
 
-  void startDecrypt(String key) {
-    print("start decrypt from ${isDecrypted.value} to ${true}");
+  // void startDecrypt(String key) {
+  //   print("start decrypt from ${isDecrypted.value} to ${true}");
+  //   if (_lokasi.value != "Choose Vault File") {
+  //     listDecryptedFile = decryptFile(_lokasi.value, key);
+  //     if (listDecryptedFile?.length != 0) {
+  //       listDecryptedFile?.forEach((element) {
+  //         widgetListDecryptedFile.add(FileContainer(
+  //           filename: DateTime.now().millisecondsSinceEpoch.toString(),
+  //         ));
+  //       });
+  //     }
+  //     isDecrypted.value = true;
+  //   }
+  // }
+
+  void testDecryptFileData(String key) {
+    print("start testing using FileData ${isDecrypted.value} to true");
     if (_lokasi.value != "Choose Vault File") {
-      listDecryptedFile = decryptFile(_lokasi.value, key);
-      if (listDecryptedFile?.length != 0) {
-        listDecryptedFile?.forEach((element) {
+      testListFileData = decryptFileData(_lokasi.value, key);
+      if (testListFileData?.length != 0) {
+        testListFileData?.forEach((element) {
           widgetListDecryptedFile.add(FileContainer(
-            filename: DateTime.now().millisecondsSinceEpoch.toString(),
+            filename: element.fileName,
           ));
         });
       }
@@ -58,14 +76,14 @@ class FileDecryptController extends GetxController {
     if (tempPath == null) {
       return;
     }
-    if (listDecryptedFile != null) {
-      if (listDecryptedFile?.length != 0) {
-        listDecryptedFile?.forEach((element) {
+    if (testListFileData != null) {
+      if (testListFileData?.length != 0) {
+        testListFileData?.forEach((element) {
           File(tempPath +
                   "\\" +
                   DateTime.now().millisecondsSinceEpoch.toString() +
-                  ".jpg")
-              .writeAsBytesSync(element);
+                  "_${element.fileName}")
+              .writeAsBytesSync(element.content);
           print("file exported");
         });
       }
