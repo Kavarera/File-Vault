@@ -1,7 +1,6 @@
 import 'package:filevault/controllers/file_decrypt_controller.dart';
-import 'package:filevault/controllers/file_encrypt_controller.dart';
 import 'package:filevault/utils/hex_color.dart';
-import 'package:filevault/widgets/files_widget.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ class FileDecryptPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var fileDecryptController = Get.put(FileDecryptController());
     var keyDecryptController = TextEditingController();
+    fileDecryptController.clearItems();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
@@ -99,8 +99,23 @@ class FileDecryptPage extends StatelessWidget {
                     return Visibility(
                       visible: fileDecryptController.isDecrypted.value,
                       child: ElevatedButton(
-                          onPressed: () {
-                            fileDecryptController.exportAll();
+                          onPressed: () async {
+                            await fileDecryptController.exportAll();
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(SnackBar(
+                                /// need to set following properties for best effect of awesome_snackbar_content
+                                elevation: 0,
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.transparent,
+                                content: AwesomeSnackbarContent(
+                                  title: 'Report',
+                                  message: 'File Export is done',
+
+                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                  contentType: ContentType.success,
+                                ),
+                              ));
                           },
                           style: ButtonStyle(
                             backgroundColor:
@@ -144,7 +159,25 @@ class FileDecryptPage extends StatelessWidget {
                                 fileDecryptController
                                     .widgetListDecryptedFile[index],
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    await fileDecryptController
+                                        .exportAnItem(index);
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(SnackBar(
+                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                        elevation: 0,
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.transparent,
+                                        content: AwesomeSnackbarContent(
+                                          title: 'Report',
+                                          message: 'File Export is done',
+
+                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                          contentType: ContentType.success,
+                                        ),
+                                      ));
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
                                         Colors.blueAccent),

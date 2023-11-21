@@ -97,7 +97,7 @@ class _FileEncryptPageState extends State<FileEncryptPage>
                                 "Sedang Membuat Vault", // Tidak dapat menutup dialog dengan mengklik di luar dialog
                             content: Container(
                               width: 800,
-                              height: 400,
+                              height: 500,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -27,6 +27,39 @@ class FileDecryptController extends GetxController {
     return _lokasi.value;
   }
 
+  Future<void> exportAnItem(int index) async {
+    final String? tempPath = await getDirectoryPath();
+    if (tempPath == null) {
+      return;
+    }
+    if (testListFileData != null) {
+      if (testListFileData?.length != 0) {
+        File(tempPath +
+                "\\" +
+                DateTime.now().millisecondsSinceEpoch.toString() +
+                "_Decrypted_${testListFileData![index].fileName}")
+            .writeAsBytesSync(testListFileData![index].content);
+        print("file exported");
+      }
+    }
+  }
+
+  void clearItems() {
+    if (widgetListDecryptedFile != null) {
+      if (widgetListDecryptedFile?.length != 0) {
+        widgetListDecryptedFile.clear();
+        print("widget clear");
+        isDecrypted.value = false;
+      }
+    }
+    if (testListFileData != null) {
+      if (testListFileData?.length != 0) {
+        testListFileData?.clear();
+        print("data clear");
+      }
+    }
+  }
+
   Future<void> setLokasi() async {
     var path = await openFile(acceptedTypeGroups: [vaultFileFormat]);
     if (path != null) {
@@ -82,7 +115,7 @@ class FileDecryptController extends GetxController {
           File(tempPath +
                   "\\" +
                   DateTime.now().millisecondsSinceEpoch.toString() +
-                  "_${element.fileName}")
+                  "_Decrypted_${element.fileName}")
               .writeAsBytesSync(element.content);
           print("file exported");
         });
