@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:filevault/controllers/file_encrypt_controller.dart';
 import 'package:filevault/utils/hex_color.dart';
 import 'package:filevault/utils/random_facts.dart';
@@ -88,8 +89,42 @@ class _FileEncryptPageState extends State<FileEncryptPage>
                   padding: EdgeInsets.only(left: 5),
                   child: ElevatedButton(
                     onPressed: () async {
-                      print(fileEncryptController.widgetListFile.length);
-                      if (fileEncryptController.widgetListFile.length > 0) {
+                      if (keyController.text.length <= 0 ||
+                          keyController.text.length > 32) {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            /// need to set following properties for best effect of awesome_snackbar_content
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Failed to encrypt',
+                              message: 'Key length must be 1 to 32',
+
+                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                              contentType: ContentType.failure,
+                            ),
+                          ));
+                      } else if (fileEncryptController.lokasi.value == "") {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            /// need to set following properties for best effect of awesome_snackbar_content
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Failed to encrypt',
+                              message: 'choose a path',
+
+                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                              contentType: ContentType.failure,
+                            ),
+                          ));
+                      } else if (fileEncryptController.widgetListFile.length >
+                          0) {
+                        print(fileEncryptController.widgetListFile.length);
                         Get.defaultDialog(
                             barrierDismissible: false,
                             contentPadding: const EdgeInsets.all(0),
@@ -159,6 +194,22 @@ class _FileEncryptPageState extends State<FileEncryptPage>
                             .startEncrypt(keyController.text.toString());
                         print("dialog tertutup");
                         Get.back();
+                      } else {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            /// need to set following properties for best effect of awesome_snackbar_content
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Failed to encrypt',
+                              message: 'Paling tidak menyimpan 1 file',
+
+                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                              contentType: ContentType.failure,
+                            ),
+                          ));
                       }
                     },
                     child: Text("Encrypt"),

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:filevault/controllers/login_controller.dart';
 import 'package:filevault/routes/route_name.dart';
 import 'package:filevault/utils/hex_color.dart';
@@ -130,6 +131,22 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                               setState(() {
                                 _loginIsSuccess = true;
                               });
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(SnackBar(
+                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                  elevation: 0,
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  content: AwesomeSnackbarContent(
+                                    title: 'Failed to Login',
+                                    message: 'Username / Password salah',
+
+                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                    contentType: ContentType.failure,
+                                  ),
+                                ));
                             }
                           },
                           child: const Padding(

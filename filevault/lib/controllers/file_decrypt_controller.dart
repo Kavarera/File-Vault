@@ -89,18 +89,22 @@ class FileDecryptController extends GetxController {
   //   }
   // }
 
-  void testDecryptFileData(String key) {
+  Future<void> testDecryptFileData(String key) async {
     print("start testing using FileData ${isDecrypted.value} to true");
-    if (_lokasi.value != "Choose Vault File") {
-      testListFileData = decryptFileData(_lokasi.value, key);
-      if (testListFileData?.length != 0) {
-        testListFileData?.forEach((element) {
-          widgetListDecryptedFile.add(FileContainer(
-            filename: element.fileName,
-          ));
-        });
+    try {
+      if (_lokasi.value != "Choose Vault File") {
+        testListFileData = decryptFileData(_lokasi.value, key);
+        if (testListFileData?.length != 0) {
+          testListFileData?.forEach((element) {
+            widgetListDecryptedFile.add(FileContainer(
+              filename: element.fileName,
+            ));
+          });
+        }
+        isDecrypted.value = true;
       }
-      isDecrypted.value = true;
+    } catch (e) {
+      isDecrypted.value = false;
     }
   }
 

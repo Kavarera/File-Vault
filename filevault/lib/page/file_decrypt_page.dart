@@ -78,10 +78,46 @@ class FileDecryptPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: ElevatedButton(
-                  onPressed: () {
-                    fileDecryptController.testDecryptFileData(
-                        keyDecryptController.text.toString());
-                    print(fileDecryptController.isDecrypted.value);
+                  onPressed: () async {
+                    if (fileDecryptController.getLokasi() ==
+                        "Choose File Vault") {
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(
+                          /// need to set following properties for best effect of awesome_snackbar_content
+                          elevation: 0,
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          content: AwesomeSnackbarContent(
+                            title: 'Failed to encrypt',
+                            message: 'Paling tidak menyimpan 1 file',
+
+                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                            contentType: ContentType.failure,
+                          ),
+                        ));
+                    } else {
+                      await fileDecryptController.testDecryptFileData(
+                          keyDecryptController.text.toString());
+                      if (fileDecryptController.isDecrypted.value == false) {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            /// need to set following properties for best effect of awesome_snackbar_content
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Gagal membuka',
+                              message: 'Key salah',
+
+                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                              contentType: ContentType.failure,
+                            ),
+                          ));
+                      }
+                      print(fileDecryptController.isDecrypted.value);
+                    }
                   },
                   child: Text("Decrypt"),
                 ),
