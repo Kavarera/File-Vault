@@ -151,6 +151,24 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                             backgroundColor: HexColor("#52D14E"),
                           ),
                           onPressed: () async {
+                            if (password1Controller.text.length < 8 &&
+                                password2Controller.text.length < 8) {
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(SnackBar(
+                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                  elevation: 0,
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.transparent,
+                                  content: AwesomeSnackbarContent(
+                                    title: 'Failed to Register',
+                                    message: 'Password Terlalu Pendek',
+
+                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                    contentType: ContentType.failure,
+                                  ),
+                                ));
+                            }
                             if (password1Controller.text.isNotEmpty &&
                                 usernameController.text.isNotEmpty) {
                               if ((password1Controller.text ==
