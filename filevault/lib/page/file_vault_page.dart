@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class FileVaultPage extends StatelessWidget {
   FileVaultPage({super.key});
 
-  var _fileVaultController = Get.put(FileVaultController());
+  final _fileVaultController = Get.put(FileVaultController());
 
   @override
   Widget build(BuildContext context) {

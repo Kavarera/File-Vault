@@ -14,11 +14,56 @@ import '../utils/random_facts.dart';
 import '../utils/random_images.dart';
 
 class FileEncryptController extends GetxController {
-  XTypeGroup jpgsTypeGroup = const XTypeGroup(
-    label: 'JPEGs',
-    extensions: <String>['jpg', 'jpeg'],
+  XTypeGroup imagesTypeGroup = const XTypeGroup(
+    label: 'Images',
+    extensions: <String>['jpg', 'jpeg', 'png'],
   );
-  XTypeGroup pngTypeGroup = const XTypeGroup(
+  XTypeGroup documentsTypeGroup = const XTypeGroup(
+    label: 'Documents',
+    extensions: <String>[
+      'docx',
+      'doc',
+      'pdf',
+      'xlsx',
+      'xls',
+      'csv',
+      'pptx',
+      'ppt',
+      'txt',
+      'zip',
+      'rar',
+      'tar',
+      'gz'
+    ],
+  );
+  XTypeGroup codingTypeGroup = const XTypeGroup(
+    label: 'Coding File',
+    extensions: <String>[
+      'cpp',
+      'kt',
+      'dart',
+      'java',
+      'py',
+      'lua',
+      'html',
+      'css',
+      'js',
+      'md',
+      'gitignore',
+      'ipynb',
+      'xml',
+      'sql',
+      'ddl',
+      'yaml',
+      'yml',
+      'properties',
+      'c',
+      'sh',
+      'log',
+      'bat',
+    ],
+  );
+  XTypeGroup anyTypeGroup = const XTypeGroup(
     label: 'any',
     extensions: <String>['*'],
   );
@@ -30,8 +75,10 @@ class FileEncryptController extends GetxController {
   List<XFile> files = List<XFile>.empty(growable: true);
   Future<void> selectFile({multiple = false}) async {
     files = await openFiles(acceptedTypeGroups: <XTypeGroup>[
-      jpgsTypeGroup,
-      pngTypeGroup,
+      imagesTypeGroup,
+      documentsTypeGroup,
+      codingTypeGroup,
+      anyTypeGroup
     ]);
     files.forEach((element) {
       widgetListFile.add(FileContainer(
@@ -45,6 +92,8 @@ class FileEncryptController extends GetxController {
     widgetListFile.removeAt(index);
     files.removeAt(index);
   }
+
+  void clearLoadedData() {}
 
   Future<void> getPath() async {
     final String? tempPath = await getDirectoryPath();
@@ -63,28 +112,4 @@ class FileEncryptController extends GetxController {
       },
     );
   }
-
-  // Future<void> readFileVault(String vaultPath) async {
-  //   try {
-  //     final vaultFile = await FilePicker.platform.pickFiles(withData: true);
-  //     if (vaultFile == null) {
-  //       return;
-  //     }
-
-  //     print("vaultFile name = ${vaultFile.files.single.name}");
-  //     print("vaultFile path = ${vaultFile.files.single.path}");
-  //     print("vaultFile read = ");
-  //     Uint8List? fileBytes = vaultFile.files.first.bytes;
-  //     if (fileBytes == null) {
-  //       print("fileBytes is null, why??");
-  //       return;
-  //     }
-  //     print(fileBytes);
-  //     File(vaultFile.files.first.path.toString() + "_hasil.jpeg")
-  //         .writeAsBytesSync(fileBytes);
-  //     //coba write gambar lagi
-  //   } catch (e) {
-  //     print("Error while read vault = $e ");
-  //   }
-  // }
 }

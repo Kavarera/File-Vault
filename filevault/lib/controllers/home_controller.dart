@@ -1,4 +1,5 @@
 import 'package:filevault/page/file_vault_page.dart';
+import 'package:filevault/page/supet_encrypttext_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +11,7 @@ class HomeController extends GetxController {
       case 0:
         return FileVaultPage();
       case 1:
-        return Text("Super Encrypt Page");
+        return SuperEncryptPage();
       default:
         return Text("invalid id = $_currentPage");
     }
