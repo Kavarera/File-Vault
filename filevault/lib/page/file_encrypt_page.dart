@@ -22,9 +22,9 @@ class _FileEncryptPageState extends State<FileEncryptPage>
   var fileEncryptController = Get.put(FileEncryptController());
   var keyController = TextEditingController();
   var _currentImage = Random().nextInt(getTotalRandomPic());
-
   @override
   Widget build(BuildContext context) {
+    fileEncryptController.clearLoadedData();
     return Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

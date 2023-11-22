@@ -93,7 +93,14 @@ class FileEncryptController extends GetxController {
     files.removeAt(index);
   }
 
-  void clearLoadedData() {}
+  void clearLoadedData() {
+    if (widgetListFile.length > 0) {
+      if (files.length > 0) {
+        files.clear();
+        widgetListFile.clear();
+      }
+    }
+  }
 
   Future<void> getPath() async {
     final String? tempPath = await getDirectoryPath();
