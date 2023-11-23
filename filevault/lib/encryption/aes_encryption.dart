@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 import 'package:file_selector/file_selector.dart';
+import 'package:filevault/encryption/superencrypt.dart';
 
 import '../models/file.dart';
 
@@ -50,8 +51,10 @@ Future<void> encryptFiles(
     String testPath = pathOutput +
         "\\" +
         "${DateTime.now().millisecondsSinceEpoch}_Kavarera Vault.kvault";
-    File(testPath).writeAsStringSync(jsonEncode(fileDatas));
-    decryptFileData(testPath, key);
+    // File(testPath).writeAsStringSync(jsonEncode(fileDatas));
+
+    //test enkripted
+    File(testPath).writeAsStringSync(encryptRC4(jsonEncode(fileDatas), key));
   }
 }
 
@@ -91,7 +94,7 @@ List<FileData> decryptFileData(String pathOutput, String key) {
   final keyFrom = encrypt.Key.fromUtf8(key.padRight(32));
   // TESTING BACA FILE FORMATED JSON
   String contentVault = File(pathOutput).readAsStringSync();
-  dynamic decodedJson = jsonDecode(contentVault);
+  dynamic decodedJson = jsonDecode(decryptRC4(contentVault, key));
 
   List<Map<String, dynamic>> jsonList =
       (decodedJson is List) ? List<Map<String, dynamic>>.from(decodedJson) : [];

@@ -104,6 +104,7 @@ class FileDecryptController extends GetxController {
         isDecrypted.value = true;
       }
     } catch (e) {
+      print(e);
       isDecrypted.value = false;
     }
   }
